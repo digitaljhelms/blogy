@@ -73,15 +73,14 @@ class Post(models.Model):
     def __unicode__(self):
         return self.title
 
+	@models.permalink
     def get_absolute_url(self):
-        kwargs = {
+        return ('post_detail', (), {
             'slug':self.slug,
             'year':self.published_on.year,
-            'month':self.published_on.strftime('%b'),
+            'month':self.published_on.strftime('%m'),
             'day':self.published_on.strftime('%d'),
-            }
-        return ('post_detail', (), kwargs)
-    get_absolute_url = models.permalink(get_absolute_url)
+            })
 
     def _get_url(self):
         """

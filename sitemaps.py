@@ -20,10 +20,8 @@ class BlogSitemap(Sitemap):
         return obj.updated_on
 
     def priority(self, obj):
-        ct = ContentType.objects.get_for_model(Post)
-        pk = obj.pk
-        count = Comment.objects.filter(content_type=ct).\
-            filter(object_pk=pk).count()
+        pk = str(obj.pk)
+        count = Comment.objects.for_model(Post).filter(object_pk=pk).count()
         return 0.5 + min(count/COMMENT_PRIORITY_THRESHOLD,0.5)
 
     def items(self):

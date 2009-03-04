@@ -28,6 +28,14 @@ info_dict_preview = {
     'month_format': '%b',
     'template_name': 'blogy/post_preview.html',
     }
+info_dict_preview_edit = {
+    'queryset': Post.objects.all(),
+    'date_field': 'created_on',
+    'slug_field': 'slug',
+    'month_format': '%b',
+    'form_class': PostEditForm,
+    'template_name': 'blogy/post_preview_edit.html',
+    }
 info_dict_year = {
     'queryset': Post.published.all(),
     'date_field': 'published_on',
@@ -55,8 +63,11 @@ urlpatterns = patterns('blog.views',
         never_cache(date_based.object_detail), info_dict_detail, name="post_detail"),
     url(r'^(?P<year>\d{4})/(?P<month>\w{3})/(?P<day>\d{1,2})/(?P<slug>[-\w]+)/edit/$', 
         login_required(never_cache(object_edit)), info_dict_edit, name="post_edit"),
+
     url(r'^(?P<year>\d{4})/(?P<month>\w{3})/(?P<day>\d{1,2})/(?P<slug>[-\w]+)/preview/$', 
         login_required(never_cache(date_based.object_detail)), info_dict_preview, name="post_preview"),
+    url(r'^(?P<year>\d{4})/(?P<month>\w{3})/(?P<day>\d{1,2})/(?P<slug>[-\w]+)/preview/edit/$', 
+        login_required(never_cache(object_edit)), info_dict_preview_edit, name="post_preview_edit"),
 
     url(r'^(?P<year>\d{4})/$',
         date_based.archive_year, info_dict_year, name="year_archive"),

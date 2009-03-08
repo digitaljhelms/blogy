@@ -75,11 +75,17 @@ class Post(models.Model):
 
     @models.permalink
     def get_absolute_url(self):
-        return ('post_detail', (), {
+        if self.is_draft: post_urlpattern = 'post_preview'
+        else: post_urlpattern = 'post_detail'
+
+        dt = self.published_on
+        if self.is_draft: dt = self.created_on
+
+        return (post_urlpattern, (), {
             'slug':self.slug,
-            'year':self.published_on.year,
-            'month':self.published_on.strftime('%m'),
-            'day':self.published_on.strftime('%d'),
+            'year':dt.year,
+            'month':dt.strftime('%m'),
+            'day':dt.strftime('%d'),
             })
 
     def _get_url(self):

@@ -8,4 +8,4 @@ class PostEditForm(forms.ModelForm):
 
     class Meta:
         model = Post
-        exclude = ('author','is_draft','slug')
+        exclude = ('author','slug')
